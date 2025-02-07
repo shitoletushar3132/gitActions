@@ -1,5 +1,10 @@
 name: Deploy Dist
-on: [push, workflow_dispatch]
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   test:
@@ -8,7 +13,7 @@ jobs:
       - name: test
         run: echo "Tested"
 
-  deploy:
+  build:
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -26,5 +31,20 @@ jobs:
       - name: Build Project
         run: npm run build
 
+      - name: Upload Dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-files
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-files
+          path: dist
       - name: Deploy
         run: echo "Deploy successfull"
