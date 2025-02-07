@@ -55,14 +55,11 @@ jobs:
           name: dist-files
           path: dist
 
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v4
-
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          name: githubpages
           path: dist
+          name: github-pages # ✅ Renaming artifact to "github-pages"
 
       - name: Deploy to GitHub Pages
         id: deployment
